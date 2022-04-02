@@ -1,26 +1,50 @@
 import React, { useState } from 'react'
-import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
+import { useNavigate } from 'react-router-dom'
 import { auth } from '../firebase'
+
 const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState(false)
+
+    const navigate = useNavigate()
 
     const handleLogin = (e) => {
         e.preventDefault()
         if (email === '' && password === '' || email === '' || password === '') {
             alert('Empty fields are not allowed.')
         } else {
-            createUserWithEmailAndPassword(auth, email, password)
+            signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     const user = userCredential.user
+                    console.log(user)
+                    navigate('/')
                 })
                 .catch((error) => {
                     setError(true)
                 })
+            setEmail('')
+            setPassword('')
         }
 
     }
+
+    // const handleRegister = () => {
+    //     e.preventDefault()
+    //     if (email === '' && password === '' || email === '' || password === '') {
+    //         alert('Empty fields are not allowed.')
+    //     } else {
+    //         createUserWithEmailAndPassword(auth, email, password)
+    //             .then((userCredential) => {
+    //                 const user = userCredential.user
+    //             })
+    //             .catch((error) => {
+    //                 setError(true)
+    //             })
+    //     }
+    // }
+
     return (
         <div>
              <h1>login page</h1>
