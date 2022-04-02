@@ -2,26 +2,34 @@ import './App.css';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Home from './pages/Home'
 import Login from './pages/Login'
+import Test from './pages/Test'
 import Navbar from './components/ Navbar';
+import { useContext } from 'react';
+import { AuthContext } from './context/AuthContext';
+import ProtectedRoutes from './ProtectedRoutes';
 
 function App() {
 
-  const currentUser = false
+  const { currentUser } = useContext(AuthContext)
 
   const RequireAuth = ({ childern }) => {
     return currentUser ? ( childern ) : <Navigate to='/login' />
   }
 
+  console.log(currentUser)
+  
   return (
     <BrowserRouter>
       <Navbar />
       <Routes>
+
+        <Route element={<ProtectedRoutes />}>
+          <Route path='/' element={ <Home /> }/>
+          <Route path='/test' element={ <Test /> }/>
+        </Route>
+
         <Route path='/login' element={ <Login /> }/>
-        <Route path='/' element={ 
-          <RequireAuth>
-            <Home />
-          </RequireAuth> 
-        }/>
+        
       </Routes>
     </BrowserRouter>
   );

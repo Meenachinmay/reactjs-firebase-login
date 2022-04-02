@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
 import { useNavigate } from 'react-router-dom'
 import { auth } from '../firebase'
+import { AuthContext } from '../context/AuthContext'
 
 const Login = () => {
     const [email, setEmail] = useState('')
@@ -9,6 +10,8 @@ const Login = () => {
     const [error, setError] = useState(false)
 
     const navigate = useNavigate()
+
+    const { dispatch } = useContext(AuthContext)
 
     const handleLogin = (e) => {
         e.preventDefault()
@@ -18,7 +21,10 @@ const Login = () => {
             signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
                     const user = userCredential.user
-                    console.log(user)
+                    dispatch({
+                        type: "LOGIN",
+                        payload: user
+                    })
                     navigate('/')
                 })
                 .catch((error) => {
