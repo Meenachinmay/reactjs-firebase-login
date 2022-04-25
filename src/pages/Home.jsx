@@ -3,6 +3,7 @@ import { doc, serverTimestamp, setDoc } from 'firebase/firestore'
 import { db } from '../firebase'
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import { storage } from '../firebase'
+import { collection, getDocs } from 'firebase/firestore';
 
 const Home = () => {
     const [file, setFile] = useState('')
@@ -11,6 +12,8 @@ const Home = () => {
         motive: "going to japan",
         country: "India"
     })
+ 
+    const [url, setUrl] = useState('')
 
     useEffect(() => {
         const uploadFile = () => {
@@ -47,7 +50,20 @@ const Home = () => {
             );
         }
         file && uploadFile()
+
     }, [file])
+
+    useEffect(() => {
+         //fetching data here
+         const fetchData = async () => {
+            const querySnapshot = await getDocs(collection(db, 'myCollection'))
+            querySnapshot.forEach((doc) => {
+                setUrl(doc.data().imgURL)
+            })
+        }
+
+        fetchData()
+    }, [url])
 
     const handleData = async () => {
        try {
@@ -60,16 +76,15 @@ const Home = () => {
        }
     }
     
-    const handleSampleData = () => {
-        
-        console.log (myData)
-    }
 
     return (
         <div>
             <h1>Home page</h1>
             <input type='file' onChange={(e) => setFile(e.target.files[0])}/>
             <button onClick={handleData}>Submit data</button>
+            {
+                url ? <img src={url} style={{ width: '400px', height: '400px' }}/> : <p>Image is loading yet...</p>
+            }
         </div>
     )
 }
