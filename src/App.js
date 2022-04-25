@@ -9,14 +9,6 @@ import { AuthContext } from './context/AuthContext';
 import ProtectedRoutes from './ProtectedRoutes';
 
 function App() {
-
-  const { currentUser } = useContext(AuthContext)
-
-  const RequireAuth = ({ childern }) => {
-    return currentUser ? ( childern ) : <Navigate to='/login' />
-  }
-
-  console.log(currentUser)
   
   return (
     <BrowserRouter>
@@ -29,7 +21,7 @@ function App() {
         </Route>
 
         <Route path='/login' element={ <Login /> }/>
-        
+
       </Routes>
     </BrowserRouter>
   );

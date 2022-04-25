@@ -56,9 +56,9 @@ const Login = () => {
              <h1>login page</h1>
              <div className=''>
                  <form onSubmit={handleLogin}>
-                    <input type='text' placeholder='Email' onChange={(e) => setEmail(e.target.value)}/>
-                    <input type='password' placeholder='Password' onChange={(e) => setPassword(e.target.value)}/>
-                    <button type='submit'>
+                    <input style={{ padding: '10px', marginRight: '5px'}} type='text' placeholder='Email' onChange={(e) => setEmail(e.target.value)}/>
+                    <input style={{ padding: '10px'}} type='password' placeholder='Password' onChange={(e) => setPassword(e.target.value)}/>
+                    <button style={{ padding: '10px', marginLeft: '5px', cursor: 'pointer'}} type='submit'>
                         Login
                     </button>
                     {error && <span style={{color: 'red'}}>Wrong email or password!</span>}
